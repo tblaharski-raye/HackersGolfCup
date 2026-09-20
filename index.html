@@ -243,9 +243,6 @@
     <div class="select-wrap">
       <select id="entry-match-select" disabled><option value="">Select match...</option></select>
     </div>
-    <div class="select-wrap" id="entry-segment-wrap" style="display:none">
-      <select id="entry-segment-select"><option value="">Select segment...</option></select>
-    </div>
   </div>
   <div id="entry-content" style="display:none">
     <div id="entry-holes-container"></div>
@@ -316,10 +313,7 @@
     <div class="sticky-entry-bar-round" id="sticky-bar-round"></div>
     <div class="sticky-entry-bar-match" id="sticky-bar-match"></div>
   </div>
-  <div class="sticky-entry-bar-status">
-    <div class="sticky-entry-bar-value tied" id="sticky-bar-value">AS</div>
-    <div class="sticky-entry-bar-thru" id="sticky-bar-thru">Thru 0</div>
-  </div>
+
 </div>
 
 <nav class="tabs">
@@ -343,7 +337,7 @@
 
   var state = {
     rounds: [], matches: [], segments: [], matchPlayers: [], holeResults: [], players: [],
-    entryRoundId: null, entryMatchId: null, entrySegmentId: null, entryMatch: null, entrySegment: null,
+    entryRoundId: null, entryMatchId: null, entryMatch: null,
     segmentBuilderCount: 0
   };
 
@@ -686,24 +680,8 @@
 
   document.getElementById('entry-match-select').addEventListener('change', function () {
     state.entryMatchId = this.value;
-    document.getElementById('entry-content').style.display = 'none';
-    if (!this.value) { document.getElementById('entry-segment-wrap').style.display = 'none'; return; }
-    var segs = segmentsForMatch(state.entryMatchId);
-    if (segs.length > 1) {
-      var sel = document.getElementById('entry-segment-select');
-      sel.innerHTML = '<option value="">Select segment...</option>' + segs.map(function (s) {
-        return '<option value="' + s.id + '">' + formatLabel(s.format) + ' (Holes ' + s.hole_start + '-' + s.hole_end + ')</option>';
-      }).join('');
-      document.getElementById('entry-segment-wrap').style.display = 'block';
-    } else {
-      document.getElementById('entry-segment-wrap').style.display = 'none';
-      if (segs.length === 1) { state.entrySegmentId = segs[0].id; loadEntryHoles(); }
-    }
-  });
-
-  document.getElementById('entry-segment-select').addEventListener('change', function () {
-    state.entrySegmentId = this.value;
-    if (this.value) loadEntryHoles();
+    if (!this.value) { document.getElementById('entry-content').style.display = 'none'; return; }
+    loadEntryHoles();
   });
 
   function resetEntryToLanding() {
@@ -715,13 +693,11 @@
 
   function loadEntryHoles() {
     var match = state.matches.find(function (m) { return m.id === state.entryMatchId; });
-    var segment = state.segments.find(function (s) { return s.id === state.entrySegmentId; });
     state.entryMatch = match;
-    state.entrySegment = segment;
     var southFirst = playersForMatch(match.id, 'South').map(function (n) { return n.split(' ')[0]; }).join('/');
     var lightFirst = playersForMatch(match.id, 'Light').map(function (n) { return n.split(' ')[0]; }).join('/');
     var round = state.rounds.find(function (r) { return r.id === match.round_id; });
-    document.getElementById('sticky-bar-round').textContent = round.name + ' \u00b7 ' + formatLabel(segment.format) + ' (' + segment.hole_start + '-' + segment.hole_end + ')';
+    document.getElementById('sticky-bar-round').textContent = round.name;
     document.getElementById('sticky-bar-match').textContent = 'South: ' + southFirst + '  vs  Light: ' + lightFirst;
     document.getElementById('sticky-entry-bar').classList.add('visible');
     document.body.classList.add('scoring-active');
@@ -730,37 +706,43 @@
     refreshEntryView();
   }
 
+  // Renders every segment of the current match in one continuous view, so the
+  // scorer never has to pick a segment — all of a match's holes load together,
+  // and the decided-early prompt fires naturally as each segment clinches.
   function refreshEntryView() {
-    var st = calcSegmentStatus(state.entryMatch.id, state.entrySegment);
-    var el = document.getElementById('sticky-bar-value');
-    el.textContent = st.statusText;
-    el.className = 'sticky-entry-bar-value ' + st.statusClass;
-    document.getElementById('sticky-bar-thru').textContent = (st.complete ? 'FINAL' : 'Thru ' + st.holesPlayed);
-    renderEntryHoles(state.entryMatch, state.entrySegment);
-    return st;
+    renderEntryHoles(state.entryMatch);
   }
 
-  function renderEntryHoles(match, segment) {
-    var holes = segmentHoles(segment);
-    var results = segmentResults(match.id, segment);
+  function renderEntryHoles(match) {
+    var segs = segmentsForMatch(match.id);
     var html = '';
-    holes.forEach(function (holeNum) {
-      var result = results.find(function (r) { return r.hole_number === holeNum; });
-      var southSel = (result && result.winner === 'South') ? ' selected' : '';
-      var halvSel = (result && result.winner === 'halved') ? ' selected' : '';
-      var lightSel = (result && result.winner === 'Light') ? ' selected' : '';
-      html += '<div class="hole-entry-card" id="hole-card-' + holeNum + '">'
-        + '<div class="hole-entry-header"><div class="hole-entry-num">Hole ' + holeNum + '</div></div>'
-        + '<div class="winner-btns">'
-        + '<button class="winner-btn south-btn' + southSel + '" onclick="recordHole(' + holeNum + ', \'South\')">South</button>'
-        + '<button class="winner-btn halved-btn' + halvSel + '" onclick="recordHole(' + holeNum + ', \'halved\')">Halved</button>'
-        + '<button class="winner-btn light-btn' + lightSel + '" onclick="recordHole(' + holeNum + ', \'Light\')">Light</button>'
-        + '</div></div>';
+    segs.forEach(function (segment) {
+      var st = calcSegmentStatus(match.id, segment);
+      var holes = segmentHoles(segment);
+      var results = segmentResults(match.id, segment);
+      html += '<div class="segment-status-bar" style="background:#1a1a1a;border:1px solid #333;border-radius:10px 10px 0 0;margin-top:16px;">'
+        + '<div class="segment-meta">' + formatLabel(segment.format) + '<span class="format-badge">Holes ' + segment.hole_start + '-' + segment.hole_end + '</span></div>'
+        + '<div class="segment-status-center"><div class="match-status ' + st.statusClass + '">' + st.statusText + '</div>'
+        + '<div class="holes-thru">' + (st.complete ? 'FINAL' : 'Thru ' + st.holesPlayed) + '</div></div>'
+        + '</div>';
+      holes.forEach(function (holeNum) {
+        var result = results.find(function (r) { return r.hole_number === holeNum; });
+        var southSel = (result && result.winner === 'South') ? ' selected' : '';
+        var halvSel = (result && result.winner === 'halved') ? ' selected' : '';
+        var lightSel = (result && result.winner === 'Light') ? ' selected' : '';
+        html += '<div class="hole-entry-card" id="hole-card-' + holeNum + '" style="border-radius:0;border-top:none;">'
+          + '<div class="hole-entry-header"><div class="hole-entry-num">Hole ' + holeNum + '</div></div>'
+          + '<div class="winner-btns">'
+          + '<button class="winner-btn south-btn' + southSel + '" onclick="recordHole(\'' + segment.id + '\', ' + holeNum + ', \'South\')">South</button>'
+          + '<button class="winner-btn halved-btn' + halvSel + '" onclick="recordHole(\'' + segment.id + '\', ' + holeNum + ', \'halved\')">Halved</button>'
+          + '<button class="winner-btn light-btn' + lightSel + '" onclick="recordHole(\'' + segment.id + '\', ' + holeNum + ', \'Light\')">Light</button>'
+          + '</div></div>';
+      });
     });
     document.getElementById('entry-holes-container').innerHTML = html;
   }
 
-  async function recordHole(holeNum, winner) {
+  async function recordHole(segmentId, holeNum, winner) {
     try {
       var existing = state.holeResults.find(function (r) { return r.match_id === state.entryMatchId && r.hole_number === holeNum; });
       if (existing) {
@@ -770,9 +752,11 @@
         var newResult = await post('hackerscup_hole_results', { match_id: state.entryMatchId, hole_number: holeNum, winner: winner });
         state.holeResults.push(newResult[0]);
       }
-      var st = refreshEntryView();
+      refreshEntryView();
       renderScoreboard();
-      if (st.awaitingConfirm) showMatchOverPrompt(state.entryMatch.id, state.entrySegment, st);
+      var segment = state.segments.find(function (s) { return s.id === segmentId; });
+      var st = calcSegmentStatus(state.entryMatchId, segment);
+      if (st.awaitingConfirm) showMatchOverPrompt(state.entryMatchId, segment, st);
     } catch (e) { console.error(e); showToast('Failed to save hole', 'error'); }
   }
 
@@ -808,7 +792,7 @@
       if (seg) seg.status = 'closed';
       dismissMatchOverPrompt();
       showToast('Match confirmed complete', 'success');
-      if (state.entrySegment && state.entrySegment.id === segmentId) refreshEntryView();
+      if (state.entryMatch) refreshEntryView();
       renderScoreboard();
       renderRecords();
       renderAdminMatches();
@@ -818,12 +802,8 @@
   function exitScoring() {
     resetEntryToLanding();
     document.getElementById('entry-match-select').value = '';
-    document.getElementById('entry-segment-select').value = '';
-    document.getElementById('entry-segment-wrap').style.display = 'none';
     state.entryMatchId = null;
-    state.entrySegmentId = null;
     state.entryMatch = null;
-    state.entrySegment = null;
   }
 
   // ---------- Admin: players ----------
