@@ -413,14 +413,34 @@
   }
 
   function segmentHoles(segment) {
+    var start = effectiveHoleStart(segment);
+    var end = start + (segment.hole_end - segment.hole_start);
     var holes = [];
-    for (var h = segment.hole_start; h <= segment.hole_end; h++) holes.push(h);
+    for (var h = start; h <= end; h++) holes.push(h);
     return holes;
   }
 
+  function effectiveHoleStart(segment) {
+    return segment.actual_start || segment.hole_start;
+  }
+
+  function effectiveHoleEnd(segment) {
+    return effectiveHoleStart(segment) + (segment.hole_end - segment.hole_start);
+  }
+
+  function segmentRangeLabel(segment) {
+    return effectiveHoleStart(segment) + '-' + effectiveHoleEnd(segment);
+  }
+
+  function nextSegmentFor(matchId, segment) {
+    return state.segments.find(function (s) { return s.match_id === matchId && s.segment_number === segment.segment_number + 1; });
+  }
+
   function segmentResults(matchId, segment) {
+    var start = effectiveHoleStart(segment);
+    var end = effectiveHoleEnd(segment);
     return state.holeResults.filter(function (r) {
-      return r.match_id === matchId && r.hole_number >= segment.hole_start && r.hole_number <= segment.hole_end;
+      return r.match_id === matchId && r.hole_number >= start && r.hole_number <= end;
     });
   }
 
@@ -568,7 +588,7 @@
               dots += '<div class="' + cls + '">' + h + '</div>';
             });
             html += '<div class="segment-row"><div class="segment-status-bar">'
-              + '<div class="segment-meta">' + formatLabel(seg.format) + '<span class="format-badge">Holes ' + seg.hole_start + '-' + seg.hole_end + '</span></div>'
+              + '<div class="segment-meta">' + formatLabel(seg.format) + '<span class="format-badge">Holes ' + segmentRangeLabel(seg) + '</span></div>'
               + '<div class="segment-status-center"><div class="match-status ' + st.statusClass + '">' + st.statusText + '</div>'
               + '<div class="holes-thru">' + displayStatus + '</div></div>'
               + '</div><div class="hole-dots">' + dots + '</div></div>';
@@ -721,7 +741,7 @@
       var holes = segmentHoles(segment);
       var results = segmentResults(match.id, segment);
       html += '<div class="segment-status-bar" style="background:#1a1a1a;border:1px solid #333;border-radius:10px 10px 0 0;margin-top:16px;">'
-        + '<div class="segment-meta">' + formatLabel(segment.format) + '<span class="format-badge">Holes ' + segment.hole_start + '-' + segment.hole_end + '</span></div>'
+        + '<div class="segment-meta">' + formatLabel(segment.format) + '<span class="format-badge">Holes ' + segmentRangeLabel(segment) + '</span></div>'
         + '<div class="segment-status-center"><div class="match-status ' + st.statusClass + '">' + st.statusText + '</div>'
         + '<div class="holes-thru">' + (st.complete ? 'FINAL' : 'Thru ' + st.holesPlayed) + '</div></div>'
         + '</div>';
@@ -761,21 +781,36 @@
   }
 
   // "Match Over" confirm prompt, ported from OhMi: appears once a segment is
-  // mathematically clinched. Confirming locks the segment (status -> closed),
-  // crosses out the unplayed remainder, and awards the point. Dismissing leaves
-  // it open for correction; the prompt reappears next time a hole is entered
-  // while still clinched and unconfirmed.
+  // mathematically clinched. If there's a next segment in this match, confirming
+  // also asks whether that next segment starts right away (at the next hole the
+  // group actually plays) or waits for its originally scheduled hole. Dismissing
+  // leaves the segment open for correction; the prompt reappears next time a
+  // hole is entered while still clinched and unconfirmed.
   function showMatchOverPrompt(matchId, segment, st) {
     var resultText = st.diff > 0 ? ('South ' + st.diff + ' UP') : st.diff < 0 ? ('Light ' + Math.abs(st.diff) + ' UP') : 'Tied';
+    var nextSeg = nextSegmentFor(matchId, segment);
     var overlay = document.createElement('div');
     overlay.id = 'match-over-prompt';
     overlay.className = 'modal-overlay';
+    var buttonsHtml;
+    if (nextSeg) {
+      var playedHoles = segmentResults(matchId, segment).map(function (r) { return r.hole_number; });
+      var lastPlayed = Math.max.apply(null, playedHoles);
+      var startNowHole = lastPlayed + 1;
+      var plannedHole = effectiveHoleStart(nextSeg);
+      buttonsHtml = '<div class="modal-hint" style="margin-bottom:14px;">Should the next segment start right away, or wait for its scheduled hole?</div>'
+        + '<button class="btn btn-primary" onclick="confirmSegmentOver(\'' + segment.id + '\', \'' + nextSeg.id + '\', ' + startNowHole + ')">Start Next Now (Hole ' + startNowHole + ')</button>'
+        + '<button class="btn btn-secondary" onclick="confirmSegmentOver(\'' + segment.id + '\', null, null)">Wait for Hole ' + plannedHole + '</button>'
+        + '<button class="btn btn-secondary" onclick="dismissMatchOverPrompt()">Not Yet</button>';
+    } else {
+      buttonsHtml = '<button class="btn btn-primary" onclick="confirmSegmentOver(\'' + segment.id + '\', null, null)">Confirm</button>'
+        + '<button class="btn btn-secondary" onclick="dismissMatchOverPrompt()">Not Yet</button>';
+    }
     overlay.innerHTML = '<div class="modal-box">'
       + '<div class="modal-title">Match Over!</div>'
       + '<div class="modal-result">' + resultText + '</div>'
       + '<div class="modal-hint">Confirm to lock in the result, or dismiss if you need to fix a hole first.</div>'
-      + '<button class="btn btn-primary" onclick="confirmSegmentOver(\'' + segment.id + '\')">Confirm</button>'
-      + '<button class="btn btn-secondary" onclick="dismissMatchOverPrompt()">Not Yet</button>'
+      + buttonsHtml
       + '</div>';
     document.body.appendChild(overlay);
   }
@@ -785,11 +820,16 @@
     if (prompt) prompt.remove();
   }
 
-  async function confirmSegmentOver(segmentId) {
+  async function confirmSegmentOver(segmentId, nextSegmentId, startNowHole) {
     try {
       await patch('hackerscup_match_segments', 'id=eq.' + segmentId, { status: 'closed' });
       var seg = state.segments.find(function (s) { return s.id === segmentId; });
       if (seg) seg.status = 'closed';
+      if (nextSegmentId) {
+        await patch('hackerscup_match_segments', 'id=eq.' + nextSegmentId, { actual_start: startNowHole });
+        var nextSeg = state.segments.find(function (s) { return s.id === nextSegmentId; });
+        if (nextSeg) nextSeg.actual_start = startNowHole;
+      }
       dismissMatchOverPrompt();
       showToast('Match confirmed complete', 'success');
       if (state.entryMatch) refreshEntryView();
@@ -965,7 +1005,7 @@
           + '</div>';
         segmentsForMatch(m.id).forEach(function (seg) {
           var st = calcSegmentStatus(m.id, seg);
-          html += '<div class="admin-segment-line"><div class="admin-row-meta">' + formatLabel(seg.format) + ' \u00b7 Holes ' + seg.hole_start + '-' + seg.hole_end
+          html += '<div class="admin-segment-line"><div class="admin-row-meta">' + formatLabel(seg.format) + ' \u00b7 Holes ' + segmentRangeLabel(seg)
             + ' \u00b7 <span class="status-pill ' + (seg.status === 'closed' ? 'closed' : 'active') + '">' + (seg.status === 'closed' ? 'closed' : (st.complete ? 'complete' : 'active')) + '</span></div>'
             + '<div class="admin-row-actions">'
             + (seg.status === 'closed'
