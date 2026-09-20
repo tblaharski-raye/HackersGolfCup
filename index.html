@@ -15,19 +15,6 @@
   .app-header { background: linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 40%, #1a1a1a 60%, #8B0000 100%); padding: 16px 20px 12px; text-align: center; border-bottom: 3px solid #333; position: relative; }
   .header-gear { position: absolute; top: 14px; right: 16px; background: none; border: none; color: #888; font-size: 1.4rem; cursor: pointer; padding: 4px; line-height: 1; }
   .header-gear:active { color: #FFCB05; }
-
-  .record-table { background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #333; margin-bottom: 16px; }
-  .record-table table { width: 100%; border-collapse: collapse; font-family: 'Barlow Condensed', sans-serif; }
-  .record-table th { padding: 8px 12px; font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; color: #888; text-align: left; background: #242424; border-bottom: 1px solid #333; }
-  .record-table th.num { text-align: center; }
-  .record-table td { padding: 9px 12px; font-size: 0.95rem; border-bottom: 1px solid #333; color: #f0f0f0; }
-  .record-table td.num { text-align: center; font-weight: 600; }
-  .record-table tr:last-child td { border-bottom: none; }
-  .record-rank { color: #888; font-size: 0.85rem; margin-right: 8px; }
-  .record-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .record-col-header { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
-  .record-col .record-table td { font-size: 0.85rem; }
-  .record-col .record-table td.num { color: #f0f0f0; font-weight: 600; }
   .app-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; letter-spacing: 3px; background: linear-gradient(90deg, #b0b0b0, #fff, #FFCB05); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .app-header .subtitle { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 2px; }
 
@@ -68,29 +55,35 @@
   .round-label { color: #f0f0f0; font-size: 0.85rem; }
 
   .matchup-card { background: #1a1a1a; border: 1px solid #333; border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
-  .matchup-header { display: flex; align-items: stretch; min-height: 70px; }
-  .matchup-team { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; justify-content: center; }
-  .matchup-team.south { border-left: 4px solid #666666; }
-  .matchup-team.light { border-right: 4px solid #BB0000; text-align: right; }
-  .matchup-team .player-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.2; }
-  .matchup-team.south .player-name { color: #E8E8E8; }
-  .matchup-team.light .player-name { color: #ff4444; }
-  .matchup-team.south.leading { background: #666666; }
-  .matchup-team.light.leading { background: #8B0000; }
+  .matchup-players-header { display: flex; align-items: stretch; min-height: 50px; border-bottom: 1px solid #333; }
+  .matchup-players-header .side { flex: 1; padding: 10px 12px; display: flex; align-items: center; }
+  .matchup-players-header .side.south { border-left: 4px solid #666666; }
+  .matchup-players-header .side.light { border-right: 4px solid #BB0000; justify-content: flex-end; text-align: right; }
+  .matchup-players-header .player-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; line-height: 1.2; }
+  .matchup-players-header .side.south .player-name { color: #E8E8E8; }
+  .matchup-players-header .side.light .player-name { color: #ff4444; }
+  .matchup-players-header .vs-mid { display: flex; align-items: center; justify-content: center; padding: 0 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; color: #666; }
 
-  .matchup-status-center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 10px; min-width: 90px; text-align: center; }
-  .match-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 4px; }
-  .match-status { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; line-height: 1; }
+  .segment-row { border-bottom: 1px solid #262626; }
+  .segment-row:last-child { border-bottom: none; }
+  .segment-status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; gap: 8px; }
+  .segment-meta { display: flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase; color: #888; }
+  .segment-status-center { display: flex; align-items: center; gap: 10px; }
+  .match-status { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; line-height: 1; }
   .match-status.south-up { color: #b0b0b0; }
   .match-status.light-up { color: #ff4444; }
   .match-status.tied { color: #888; }
-  .holes-thru { font-family: 'Barlow', sans-serif; font-size: 0.65rem; color: #888; margin-top: 2px; }
+  .holes-thru { font-family: 'Barlow', sans-serif; font-size: 0.65rem; color: #888; }
 
-  .hole-dots { display: flex; padding: 8px 10px; gap: 4px; background: #242424; flex-wrap: wrap; border-top: 1px solid #333; }
+  .hole-dots { display: flex; padding: 6px 12px 10px; gap: 4px; background: #191919; flex-wrap: wrap; }
   .hole-dot { width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 0.5rem; font-weight: 700; border: 1.5px solid #333; color: #888; background: #1a1a1a; }
   .hole-dot.south { background: #666666; border-color: #666666; color: #fff; }
   .hole-dot.light { background: #BB0000; border-color: #BB0000; color: #fff; }
   .hole-dot.halved { background: #555; border-color: #555; color: #ccc; }
+  .hole-dot.crossed { position: relative; opacity: 0.4; }
+  .hole-dot.crossed::before, .hole-dot.crossed::after { content: ''; position: absolute; width: 130%; height: 1.5px; background: #888; top: 50%; left: -15%; }
+  .hole-dot.crossed::before { transform: rotate(45deg); }
+  .hole-dot.crossed::after { transform: rotate(-45deg); }
 
   .round-group { margin-bottom: 24px; }
   .round-group-header { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 2px; color: #f0f0f0; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
@@ -98,7 +91,7 @@
   .round-group-header.expanded .collapse-arrow { transform: rotate(180deg); }
   .round-group-body { display: none; }
   .round-group-body.expanded { display: block; }
-  .format-badge { display: inline-block; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; background: #242424; color: #888; padding: 2px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+  .format-badge { display: inline-block; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; background: #242424; color: #888; padding: 2px 6px; border-radius: 3px; }
   .status-pill { font-family: 'Barlow Condensed', sans-serif; font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
   .status-pill.active { background: #1a3a1a; color: #4caf50; border: 1px solid #4caf50; }
   .status-pill.upcoming { background: #242424; color: #888; border: 1px solid #333; }
@@ -132,6 +125,10 @@
   .btn-primary { background: #FFCB05; color: #111; }
   .btn-secondary { background: #242424; color: #f0f0f0; border: 1px solid #333; }
 
+  .segment-builder-row { background: #242424; border: 1px solid #333; border-radius: 8px; padding: 12px; margin-bottom: 10px; position: relative; }
+  .segment-builder-row .remove-segment-btn { position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ff4444; font-size: 1rem; cursor: pointer; padding: 4px; }
+  .add-segment-btn { background: none; border: 1px dashed #333; border-radius: 8px; color: #888; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; padding: 10px; width: 100%; cursor: pointer; margin-bottom: 12px; }
+
   .admin-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; gap: 8px; }
   .admin-row:last-child { border-bottom: none; }
   .admin-row-info { flex: 1; }
@@ -139,15 +136,18 @@
   .admin-row-meta { font-size: 0.8rem; color: #888; margin-top: 2px; }
   .admin-row-actions { display: flex; gap: 8px; flex-shrink: 0; }
   .btn-sm { padding: 6px 12px; border: 1px solid #333; border-radius: 6px; background: #242424; color: #f0f0f0; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; }
-  .btn-sm.danger { border-color: #666666; color: #b0b0b0; }
+  .btn-sm.danger { border-color: #BB0000; color: #ff4444; }
   .btn-sm.gold { border-color: #FFCB05; color: #FFCB05; }
+  .admin-match-block { background: #191919; border: 1px solid #262626; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+  .admin-segment-line { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-top: 1px solid #262626; gap: 8px; }
+  .admin-segment-line:first-of-type { border-top: none; }
 
   .password-screen { padding: 40px 20px; text-align: center; }
   .password-screen h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 8px; color: #f0f0f0; }
   .password-screen p { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
   .password-screen input { width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; color: #f0f0f0; font-family: 'Barlow', sans-serif; font-size: 1rem; text-align: center; margin-bottom: 12px; }
   .password-screen input:focus { outline: none; border-color: #FFCB05; }
-  .error-msg { color: #b0b0b0; font-size: 0.85rem; margin-top: 8px; min-height: 20px; }
+  .error-msg { color: #ff4444; font-size: 0.85rem; margin-top: 8px; min-height: 20px; }
 
   .loading-state, .empty-state { text-align: center; padding: 30px 20px; color: #888; font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; letter-spacing: 1px; }
   .spinner { width: 28px; height: 28px; border: 3px solid #333; border-top-color: #FFCB05; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
@@ -156,9 +156,17 @@
   .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: #242424; border: 1px solid #333; border-radius: 8px; padding: 12px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; z-index: 200; opacity: 0; transition: opacity 0.2s; white-space: nowrap; color: #f0f0f0; }
   .toast.show { opacity: 1; }
   .toast.success { border-color: #4caf50; color: #4caf50; }
-  .toast.error { border-color: #b0b0b0; color: #b0b0b0; }
+  .toast.error { border-color: #ff4444; color: #ff4444; }
 
   .mt-16 { margin-top: 16px; }
+  .record-table { background: #1a1a1a; border-radius: 8px; overflow: hidden; border: 1px solid #333; margin-bottom: 16px; }
+  .record-table table { width: 100%; border-collapse: collapse; font-family: 'Barlow Condensed', sans-serif; }
+  .record-table td { padding: 8px 10px; font-size: 0.85rem; border-bottom: 1px solid #333; color: #f0f0f0; }
+  .record-table td.num { text-align: center; font-weight: 600; white-space: nowrap; }
+  .record-table tr:last-child td { border-bottom: none; }
+  .record-rank { color: #888; font-size: 0.85rem; margin-right: 8px; }
+  .record-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .record-col-header { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
 
   .sticky-entry-bar { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: #111; border-bottom: 2px solid #333; padding: 10px 16px; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
   .sticky-entry-bar.visible { display: flex; }
@@ -173,6 +181,12 @@
   .sticky-entry-bar-thru { font-family: 'Barlow', sans-serif; font-size: 0.65rem; color: #888; text-align: right; margin-top: 2px; }
   .sticky-back-btn { background: none; border: 1px solid #444; border-radius: 6px; color: #888; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase; padding: 6px 10px; cursor: pointer; margin-right: 10px; white-space: nowrap; }
   body.scoring-active { padding-top: 58px; }
+
+  .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .modal-box { background: #1a1a1a; border: 1px solid #444; border-radius: 12px; padding: 24px; width: 100%; max-width: 360px; }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; color: #FFCB05; margin-bottom: 8px; }
+  .modal-result { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; color: #f0f0f0; margin-bottom: 4px; }
+  .modal-hint { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; color: #aaa; margin-bottom: 20px; }
 </style>
 </head>
 <body>
@@ -229,6 +243,9 @@
     <div class="select-wrap">
       <select id="entry-match-select" disabled><option value="">Select match...</option></select>
     </div>
+    <div class="select-wrap" id="entry-segment-wrap" style="display:none">
+      <select id="entry-segment-select"><option value="">Select segment...</option></select>
+    </div>
   </div>
   <div id="entry-content" style="display:none">
     <div id="entry-holes-container"></div>
@@ -268,24 +285,16 @@
         <label>Round</label>
         <select id="match-round"></select>
       </div>
-      <div class="form-group">
-        <label>Format</label>
-        <select id="match-format" onchange="onMatchFormatChange()">
-          <option value="scramble">Scramble (2-man)</option>
-          <option value="singles">Singles (1-man)</option>
-          <option value="alt_shot">Alternate Shot (2-man)</option>
-          <option value="league_play">League Play (2-man)</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Start Hole</label><input type="number" id="match-hole-start" min="1" max="18" value="1" /></div>
-        <div class="form-group"><label>End Hole</label><input type="number" id="match-hole-end" min="1" max="18" value="9" /></div>
-      </div>
       <div class="form-group"><label>South Player 1</label><select id="match-south-1"></select></div>
-      <div class="form-group" id="match-south-2-wrap"><label>South Player 2</label><select id="match-south-2"></select></div>
+      <div class="form-group"><label>South Player 2 (leave blank for singles)</label><select id="match-south-2"></select></div>
       <div class="form-group"><label>Light Player 1</label><select id="match-light-1"></select></div>
-      <div class="form-group" id="match-light-2-wrap"><label>Light Player 2</label><select id="match-light-2"></select></div>
-      <button class="btn btn-primary" onclick="addMatch()">Add Match</button>
+      <div class="form-group"><label>Light Player 2 (leave blank for singles)</label><select id="match-light-2"></select></div>
+      <div style="margin:16px 0 8px;">
+        <label style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;color:#888;">Segments</label>
+      </div>
+      <div id="segments-builder-container"></div>
+      <button class="add-segment-btn" onclick="addSegmentRow()">+ Add Segment</button>
+      <button class="btn btn-primary" onclick="addMatch()">Create Match</button>
     </div>
     <div class="admin-section">
       <h3>Manage Matches</h3>
@@ -333,8 +342,9 @@
   var ADMIN_PW = 'HackersCup26';
 
   var state = {
-    rounds: [], matches: [], matchPlayers: [], holeResults: [], players: [],
-    entryRoundId: null, entryMatchId: null, entryMatch: null
+    rounds: [], matches: [], segments: [], matchPlayers: [], holeResults: [], players: [],
+    entryRoundId: null, entryMatchId: null, entrySegmentId: null, entryMatch: null, entrySegment: null,
+    segmentBuilderCount: 0
   };
 
   async function api(path, opts) {
@@ -364,15 +374,17 @@
       var results = await Promise.all([
         get('hackerscup_rounds', 'order=round_number.asc'),
         get('hackerscup_players', 'active=eq.true&order=team.asc,name.asc'),
-        get('hackerscup_matches', 'order=match_number.asc,hole_start.asc'),
+        get('hackerscup_matches', 'order=match_number.asc'),
+        get('hackerscup_match_segments', 'order=segment_number.asc'),
         get('hackerscup_matchup_players', 'order=position.asc'),
         get('hackerscup_hole_results', 'order=hole_number.asc')
       ]);
       state.rounds = results[0];
       state.players = results[1];
       state.matches = results[2];
-      state.matchPlayers = results[3];
-      state.holeResults = results[4];
+      state.segments = results[3];
+      state.matchPlayers = results[4];
+      state.holeResults = results[5];
       renderScoreboard();
       renderRecords();
       renderAdminPlayers();
@@ -390,7 +402,7 @@
       var ws = new WebSocket(SUPABASE_URL.replace('https', 'wss') + '/realtime/v1/websocket?apikey=' + SUPABASE_KEY + '&vsn=1.0.0');
       ws.onopen = function () {
         ws.send(JSON.stringify({ topic: 'realtime:public:hackerscup_hole_results', event: 'phx_join', payload: {}, ref: '1' }));
-        ws.send(JSON.stringify({ topic: 'realtime:public:hackerscup_matches', event: 'phx_join', payload: {}, ref: '2' }));
+        ws.send(JSON.stringify({ topic: 'realtime:public:hackerscup_match_segments', event: 'phx_join', payload: {}, ref: '2' }));
       };
       ws.onmessage = function (msg) {
         var data = JSON.parse(msg.data);
@@ -402,20 +414,30 @@
 
   // ---------- Core match-play helpers ----------
 
-  function matchHoles(match) {
+  function segmentsForMatch(matchId) {
+    return state.segments.filter(function (s) { return s.match_id === matchId; }).sort(function (a, b) { return a.segment_number - b.segment_number; });
+  }
+
+  function segmentHoles(segment) {
     var holes = [];
-    for (var h = match.hole_start; h <= match.hole_end; h++) holes.push(h);
+    for (var h = segment.hole_start; h <= segment.hole_end; h++) holes.push(h);
     return holes;
   }
 
-  function matchResults(matchId) {
-    return state.holeResults.filter(function (r) { return r.match_id === matchId; });
+  function segmentResults(matchId, segment) {
+    return state.holeResults.filter(function (r) {
+      return r.match_id === matchId && r.hole_number >= segment.hole_start && r.hole_number <= segment.hole_end;
+    });
   }
 
-  function calcMatchStatus(match) {
-    var holes = matchHoles(match);
+  // Mirrors OhMi's decided-early behavior: once a segment is mathematically clinched
+  // (margin exceeds holes remaining), it is NOT auto-marked complete. A "Match Over!"
+  // prompt must be confirmed (segment.status -> 'closed') before points are awarded
+  // and remaining holes are shown as crossed out.
+  function calcSegmentStatus(matchId, segment) {
+    var holes = segmentHoles(segment);
     var total = holes.length;
-    var results = matchResults(match.id);
+    var results = segmentResults(matchId, segment);
     var diff = 0;
     results.forEach(function (r) {
       if (r.winner === 'South') diff++;
@@ -424,7 +446,9 @@
     var holesPlayed = results.length;
     var holesLeft = total - holesPlayed;
     var clinched = holesPlayed > 0 && holesLeft > 0 && Math.abs(diff) > holesLeft;
-    var complete = holesPlayed === total || clinched || match.status === 'closed';
+    var closed = segment.status === 'closed';
+    var complete = holesPlayed === total || closed;
+    var awaitingConfirm = clinched && !closed && holesPlayed < total;
     var statusText, statusClass;
     if (holesPlayed === 0) { statusText = 'NOT STARTED'; statusClass = 'tied'; }
     else if (diff === 0) { statusText = 'AS'; statusClass = 'tied'; }
@@ -434,7 +458,20 @@
       else statusText = margin + ' UP';
       statusClass = diff > 0 ? 'south-up' : 'light-up';
     }
-    return { diff: diff, holesPlayed: holesPlayed, holesLeft: holesLeft, total: total, complete: complete, statusText: statusText, statusClass: statusClass };
+    return {
+      diff: diff, holesPlayed: holesPlayed, holesLeft: holesLeft, total: total,
+      complete: complete, awaitingConfirm: awaitingConfirm,
+      statusText: statusText, statusClass: statusClass
+    };
+  }
+
+  function crossedHolesForSegment(matchId, segment, st) {
+    if (!st.complete || st.holesPlayed >= st.total) return [];
+    var holes = segmentHoles(segment);
+    var results = segmentResults(matchId, segment);
+    var playedSet = {};
+    results.forEach(function (r) { playedSet[r.hole_number] = true; });
+    return holes.filter(function (h) { return !playedSet[h]; });
   }
 
   function awardPoints(diff) {
@@ -462,11 +499,13 @@
     var roundMatches = state.matches.filter(function (m) { return m.round_id === roundId; });
     var southPts = 0, lightPts = 0;
     roundMatches.forEach(function (m) {
-      var st = calcMatchStatus(m);
-      if (st.complete && st.holesPlayed > 0) {
-        var pts = awardPoints(st.diff);
-        southPts += pts.south; lightPts += pts.light;
-      }
+      segmentsForMatch(m.id).forEach(function (seg) {
+        var st = calcSegmentStatus(m.id, seg);
+        if (st.complete && st.holesPlayed > 0) {
+          var pts = awardPoints(st.diff);
+          southPts += pts.south; lightPts += pts.light;
+        }
+      });
     });
     return { southPts: southPts, lightPts: lightPts };
   }
@@ -509,31 +548,38 @@
         roundMatches.forEach(function (match) {
           var southNames = playersForMatch(match.id, 'South');
           var lightNames = playersForMatch(match.id, 'Light');
-          var st = calcMatchStatus(match);
-          var southLeading = st.diff > 0 ? ' leading' : '';
-          var lightLeading = st.diff < 0 ? ' leading' : '';
-          var displayStatus = (match.status === 'closed' || st.complete) ? 'FINAL' : ('Thru ' + st.holesPlayed);
-          var holes = matchHoles(match);
-          var results = matchResults(match.id);
-          var dots = '';
-          holes.forEach(function (h) {
-            var r = results.find(function (x) { return x.hole_number === h; });
-            var cls = 'hole-dot';
-            var label = h;
-            if (r) {
-              if (r.winner === 'South') cls += ' south';
-              else if (r.winner === 'Light') cls += ' light';
-              else cls += ' halved';
-            }
-            dots += '<div class="' + cls + '">' + label + '</div>';
+          var segs = segmentsForMatch(match.id);
+          html += '<div class="matchup-card"><div class="matchup-players-header">'
+            + '<div class="side south"><div class="player-name">' + southNames.join(' / ') + '</div></div>'
+            + '<div class="vs-mid">vs</div>'
+            + '<div class="side light"><div class="player-name">' + lightNames.join(' / ') + '</div></div>'
+            + '</div>';
+          segs.forEach(function (seg) {
+            var st = calcSegmentStatus(match.id, seg);
+            var displayStatus = st.complete ? 'FINAL' : ('Thru ' + st.holesPlayed);
+            var holes = segmentHoles(seg);
+            var results = segmentResults(match.id, seg);
+            var crossed = crossedHolesForSegment(match.id, seg, st);
+            var dots = '';
+            holes.forEach(function (h) {
+              var r = results.find(function (x) { return x.hole_number === h; });
+              var cls = 'hole-dot';
+              if (r) {
+                if (r.winner === 'South') cls += ' south';
+                else if (r.winner === 'Light') cls += ' light';
+                else cls += ' halved';
+              } else if (crossed.indexOf(h) !== -1) {
+                cls += ' crossed';
+              }
+              dots += '<div class="' + cls + '">' + h + '</div>';
+            });
+            html += '<div class="segment-row"><div class="segment-status-bar">'
+              + '<div class="segment-meta">' + formatLabel(seg.format) + '<span class="format-badge">Holes ' + seg.hole_start + '-' + seg.hole_end + '</span></div>'
+              + '<div class="segment-status-center"><div class="match-status ' + st.statusClass + '">' + st.statusText + '</div>'
+              + '<div class="holes-thru">' + displayStatus + '</div></div>'
+              + '</div><div class="hole-dots">' + dots + '</div></div>';
           });
-          html += '<div class="matchup-card"><div class="matchup-header">'
-            + '<div class="matchup-team south' + southLeading + '"><div class="player-name">' + southNames.join('<br>') + '</div></div>'
-            + '<div class="matchup-status-center"><div class="match-label">' + formatLabel(match.format) + '<span class="format-badge">Holes ' + match.hole_start + '-' + match.hole_end + '</span></div>'
-            + '<div class="match-status ' + st.statusClass + '">' + st.statusText + '</div>'
-            + '<div class="holes-thru">' + displayStatus + '</div></div>'
-            + '<div class="matchup-team light' + lightLeading + '"><div class="player-name">' + lightNames.join('<br>') + '</div></div>'
-            + '</div><div class="hole-dots">' + dots + '</div></div>';
+          html += '</div>';
         });
       }
       html += '</div></div>';
@@ -553,18 +599,20 @@
   function computePlayerRecords() {
     var rec = {};
     state.matches.forEach(function (m) {
-      var st = calcMatchStatus(m);
-      if (!st.complete || st.holesPlayed === 0) return;
       var southIds = state.matchPlayers.filter(function (p) { return p.match_id === m.id && p.team === 'South'; }).map(function (p) { return p.player_id; });
       var lightIds = state.matchPlayers.filter(function (p) { return p.match_id === m.id && p.team === 'Light'; }).map(function (p) { return p.player_id; });
-      var pts = awardPoints(st.diff);
-      southIds.forEach(function (id) {
-        rec[id] = rec[id] || { won: 0, lost: 0 };
-        rec[id].won += pts.south; rec[id].lost += pts.light;
-      });
-      lightIds.forEach(function (id) {
-        rec[id] = rec[id] || { won: 0, lost: 0 };
-        rec[id].won += pts.light; rec[id].lost += pts.south;
+      segmentsForMatch(m.id).forEach(function (seg) {
+        var st = calcSegmentStatus(m.id, seg);
+        if (!st.complete || st.holesPlayed === 0) return;
+        var pts = awardPoints(st.diff);
+        southIds.forEach(function (id) {
+          rec[id] = rec[id] || { won: 0, lost: 0 };
+          rec[id].won += pts.south; rec[id].lost += pts.light;
+        });
+        lightIds.forEach(function (id) {
+          rec[id] = rec[id] || { won: 0, lost: 0 };
+          rec[id].won += pts.light; rec[id].lost += pts.south;
+        });
       });
     });
     return rec;
@@ -599,8 +647,8 @@
         html += '<tr><td style="color:#888;font-size:0.85rem;">No results yet</td></tr>';
       } else {
         list.forEach(function (r, i) {
-          html += '<tr><td style="padding:8px 10px;"><span class="record-rank">' + (i + 1) + '</span>' + r.name + '</td>'
-            + '<td class="num" style="padding:8px 10px;white-space:nowrap;">' + fmtPts(r.won) + '-' + fmtPts(r.lost) + '</td></tr>';
+          html += '<tr><td><span class="record-rank">' + (i + 1) + '</span>' + r.name + '</td>'
+            + '<td class="num">' + fmtPts(r.won) + '-' + fmtPts(r.lost) + '</td></tr>';
         });
       }
       html += '</tbody></table></div></div>';
@@ -621,10 +669,7 @@
   document.getElementById('entry-round-select').addEventListener('change', function () {
     state.entryRoundId = this.value;
     populateEntryMatches();
-    document.getElementById('entry-content').style.display = 'none';
-    document.getElementById('sticky-entry-bar').classList.remove('visible');
-    document.body.classList.remove('scoring-active');
-    document.getElementById('entry-landing').style.display = 'block';
+    resetEntryToLanding();
   });
 
   function populateEntryMatches() {
@@ -635,43 +680,69 @@
     sel.innerHTML = '<option value="">Select match...</option>' + roundMatches.map(function (m) {
       var southNames = playersForMatch(m.id, 'South').join('/');
       var lightNames = playersForMatch(m.id, 'Light').join('/');
-      return '<option value="' + m.id + '">' + formatLabel(m.format) + ' (' + m.hole_start + '-' + m.hole_end + '): ' + southNames + ' vs ' + lightNames + '</option>';
+      return '<option value="' + m.id + '">' + southNames + ' vs ' + lightNames + '</option>';
     }).join('');
   }
 
   document.getElementById('entry-match-select').addEventListener('change', function () {
     state.entryMatchId = this.value;
-    if (!this.value) { document.getElementById('entry-content').style.display = 'none'; return; }
-    loadEntryHoles();
+    document.getElementById('entry-content').style.display = 'none';
+    if (!this.value) { document.getElementById('entry-segment-wrap').style.display = 'none'; return; }
+    var segs = segmentsForMatch(state.entryMatchId);
+    if (segs.length > 1) {
+      var sel = document.getElementById('entry-segment-select');
+      sel.innerHTML = '<option value="">Select segment...</option>' + segs.map(function (s) {
+        return '<option value="' + s.id + '">' + formatLabel(s.format) + ' (Holes ' + s.hole_start + '-' + s.hole_end + ')</option>';
+      }).join('');
+      document.getElementById('entry-segment-wrap').style.display = 'block';
+    } else {
+      document.getElementById('entry-segment-wrap').style.display = 'none';
+      if (segs.length === 1) { state.entrySegmentId = segs[0].id; loadEntryHoles(); }
+    }
   });
+
+  document.getElementById('entry-segment-select').addEventListener('change', function () {
+    state.entrySegmentId = this.value;
+    if (this.value) loadEntryHoles();
+  });
+
+  function resetEntryToLanding() {
+    document.getElementById('entry-content').style.display = 'none';
+    document.getElementById('sticky-entry-bar').classList.remove('visible');
+    document.body.classList.remove('scoring-active');
+    document.getElementById('entry-landing').style.display = 'block';
+  }
 
   function loadEntryHoles() {
     var match = state.matches.find(function (m) { return m.id === state.entryMatchId; });
+    var segment = state.segments.find(function (s) { return s.id === state.entrySegmentId; });
     state.entryMatch = match;
+    state.entrySegment = segment;
     var southFirst = playersForMatch(match.id, 'South').map(function (n) { return n.split(' ')[0]; }).join('/');
     var lightFirst = playersForMatch(match.id, 'Light').map(function (n) { return n.split(' ')[0]; }).join('/');
     var round = state.rounds.find(function (r) { return r.id === match.round_id; });
-    document.getElementById('sticky-bar-round').textContent = round.name + ' \u00b7 ' + formatLabel(match.format);
+    document.getElementById('sticky-bar-round').textContent = round.name + ' \u00b7 ' + formatLabel(segment.format) + ' (' + segment.hole_start + '-' + segment.hole_end + ')';
     document.getElementById('sticky-bar-match').textContent = 'South: ' + southFirst + '  vs  Light: ' + lightFirst;
     document.getElementById('sticky-entry-bar').classList.add('visible');
     document.body.classList.add('scoring-active');
     document.getElementById('entry-landing').style.display = 'none';
     document.getElementById('entry-content').style.display = 'block';
-    var results = matchResults(match.id);
-    updateEntryStatus(results, match);
-    renderEntryHoles(match, results);
+    refreshEntryView();
   }
 
-  function updateEntryStatus(results, match) {
-    var st = calcMatchStatus(match);
+  function refreshEntryView() {
+    var st = calcSegmentStatus(state.entryMatch.id, state.entrySegment);
     var el = document.getElementById('sticky-bar-value');
     el.textContent = st.statusText;
     el.className = 'sticky-entry-bar-value ' + st.statusClass;
     document.getElementById('sticky-bar-thru').textContent = (st.complete ? 'FINAL' : 'Thru ' + st.holesPlayed);
+    renderEntryHoles(state.entryMatch, state.entrySegment);
+    return st;
   }
 
-  function renderEntryHoles(match, results) {
-    var holes = matchHoles(match);
+  function renderEntryHoles(match, segment) {
+    var holes = segmentHoles(segment);
+    var results = segmentResults(match.id, segment);
     var html = '';
     holes.forEach(function (holeNum) {
       var result = results.find(function (r) { return r.hole_number === holeNum; });
@@ -699,24 +770,60 @@
         var newResult = await post('hackerscup_hole_results', { match_id: state.entryMatchId, hole_number: holeNum, winner: winner });
         state.holeResults.push(newResult[0]);
       }
-      var card = document.getElementById('hole-card-' + holeNum);
-      card.querySelectorAll('.winner-btn').forEach(function (b) { b.classList.remove('selected'); });
-      var btnClass = winner === 'South' ? '.south-btn' : (winner === 'Light' ? '.light-btn' : '.halved-btn');
-      card.querySelector(btnClass).classList.add('selected');
-      var results = matchResults(state.entryMatchId);
-      updateEntryStatus(results, state.entryMatch);
+      var st = refreshEntryView();
       renderScoreboard();
+      if (st.awaitingConfirm) showMatchOverPrompt(state.entryMatch.id, state.entrySegment, st);
     } catch (e) { console.error(e); showToast('Failed to save hole', 'error'); }
   }
 
+  // "Match Over" confirm prompt, ported from OhMi: appears once a segment is
+  // mathematically clinched. Confirming locks the segment (status -> closed),
+  // crosses out the unplayed remainder, and awards the point. Dismissing leaves
+  // it open for correction; the prompt reappears next time a hole is entered
+  // while still clinched and unconfirmed.
+  function showMatchOverPrompt(matchId, segment, st) {
+    var resultText = st.diff > 0 ? ('South ' + st.diff + ' UP') : st.diff < 0 ? ('Light ' + Math.abs(st.diff) + ' UP') : 'Tied';
+    var overlay = document.createElement('div');
+    overlay.id = 'match-over-prompt';
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = '<div class="modal-box">'
+      + '<div class="modal-title">Match Over!</div>'
+      + '<div class="modal-result">' + resultText + '</div>'
+      + '<div class="modal-hint">Confirm to lock in the result, or dismiss if you need to fix a hole first.</div>'
+      + '<button class="btn btn-primary" onclick="confirmSegmentOver(\'' + segment.id + '\')">Confirm</button>'
+      + '<button class="btn btn-secondary" onclick="dismissMatchOverPrompt()">Not Yet</button>'
+      + '</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function dismissMatchOverPrompt() {
+    var prompt = document.getElementById('match-over-prompt');
+    if (prompt) prompt.remove();
+  }
+
+  async function confirmSegmentOver(segmentId) {
+    try {
+      await patch('hackerscup_match_segments', 'id=eq.' + segmentId, { status: 'closed' });
+      var seg = state.segments.find(function (s) { return s.id === segmentId; });
+      if (seg) seg.status = 'closed';
+      dismissMatchOverPrompt();
+      showToast('Match confirmed complete', 'success');
+      if (state.entrySegment && state.entrySegment.id === segmentId) refreshEntryView();
+      renderScoreboard();
+      renderRecords();
+      renderAdminMatches();
+    } catch (e) { console.error(e); showToast('Failed to save', 'error'); }
+  }
+
   function exitScoring() {
-    document.getElementById('sticky-entry-bar').classList.remove('visible');
-    document.body.classList.remove('scoring-active');
-    document.getElementById('entry-landing').style.display = 'block';
-    document.getElementById('entry-content').style.display = 'none';
+    resetEntryToLanding();
     document.getElementById('entry-match-select').value = '';
+    document.getElementById('entry-segment-select').value = '';
+    document.getElementById('entry-segment-wrap').style.display = 'none';
     state.entryMatchId = null;
+    state.entrySegmentId = null;
     state.entryMatch = null;
+    state.entrySegment = null;
   }
 
   // ---------- Admin: players ----------
@@ -769,44 +876,82 @@
     document.getElementById('match-south-2').innerHTML = opts(southPlayers);
     document.getElementById('match-light-1').innerHTML = opts(lightPlayers);
     document.getElementById('match-light-2').innerHTML = opts(lightPlayers);
-    onMatchFormatChange();
+    if (!document.getElementById('segments-builder-container').children.length) {
+      state.segmentBuilderCount = 0;
+      addSegmentRow();
+    }
   }
 
-  function onMatchFormatChange() {
-    var fmt = document.getElementById('match-format').value;
-    var isSingles = fmt === 'singles';
-    document.getElementById('match-south-2-wrap').style.display = isSingles ? 'none' : 'block';
-    document.getElementById('match-light-2-wrap').style.display = isSingles ? 'none' : 'block';
+  function addSegmentRow() {
+    var idx = state.segmentBuilderCount++;
+    var container = document.getElementById('segments-builder-container');
+    var row = document.createElement('div');
+    row.className = 'segment-builder-row';
+    row.id = 'segment-row-' + idx;
+    row.innerHTML = '<button type="button" class="remove-segment-btn" onclick="removeSegmentRow(' + idx + ')">&times;</button>'
+      + '<div class="form-group"><label>Format</label><select id="segment-format-' + idx + '">'
+      + '<option value="scramble">Scramble (2-man)</option>'
+      + '<option value="singles">Singles (1-man)</option>'
+      + '<option value="alt_shot">Alternate Shot (2-man)</option>'
+      + '<option value="league_play">League Play (2-man)</option>'
+      + '</select></div>'
+      + '<div class="form-row">'
+      + '<div class="form-group"><label>Start Hole</label><input type="number" id="segment-start-' + idx + '" min="1" max="18" value="1" /></div>'
+      + '<div class="form-group"><label>End Hole</label><input type="number" id="segment-end-' + idx + '" min="1" max="18" value="9" /></div>'
+      + '</div>';
+    container.appendChild(row);
+  }
+
+  function removeSegmentRow(idx) {
+    var row = document.getElementById('segment-row-' + idx);
+    if (row) row.remove();
   }
 
   async function addMatch() {
     var roundId = document.getElementById('match-round').value;
-    var format = document.getElementById('match-format').value;
-    var holeStart = parseInt(document.getElementById('match-hole-start').value);
-    var holeEnd = parseInt(document.getElementById('match-hole-end').value);
     var s1 = document.getElementById('match-south-1').value;
     var s2 = document.getElementById('match-south-2').value;
     var l1 = document.getElementById('match-light-1').value;
     var l2 = document.getElementById('match-light-2').value;
-    if (!roundId || !holeStart || !holeEnd || holeEnd < holeStart) { showToast('Check round and hole range', 'error'); return; }
+    if (!roundId) { showToast('Select a round', 'error'); return; }
     if (!s1 || !l1) { showToast('Select at least one player per team', 'error'); return; }
+
+    var segRows = document.querySelectorAll('.segment-builder-row');
+    var segmentsToCreate = [];
+    for (var i = 0; i < segRows.length; i++) {
+      var rowId = segRows[i].id.replace('segment-row-', '');
+      var format = document.getElementById('segment-format-' + rowId).value;
+      var holeStart = parseInt(document.getElementById('segment-start-' + rowId).value);
+      var holeEnd = parseInt(document.getElementById('segment-end-' + rowId).value);
+      if (!holeStart || !holeEnd || holeEnd < holeStart) { showToast('Check each segment\'s hole range', 'error'); return; }
+      segmentsToCreate.push({ format: format, hole_start: holeStart, hole_end: holeEnd });
+    }
+    if (!segmentsToCreate.length) { showToast('Add at least one segment', 'error'); return; }
+
     try {
       var existingCount = state.matches.filter(function (m) { return m.round_id === roundId; }).length;
-      var matchRes = await post('hackerscup_matches', { round_id: roundId, match_number: existingCount + 1, format: format, hole_start: holeStart, hole_end: holeEnd, status: 'active' });
+      var matchRes = await post('hackerscup_matches', { round_id: roundId, match_number: existingCount + 1, status: 'active' });
       var match = matchRes[0];
       await post('hackerscup_matchup_players', { match_id: match.id, player_id: s1, team: 'South', position: 1 });
       if (s2) await post('hackerscup_matchup_players', { match_id: match.id, player_id: s2, team: 'South', position: 2 });
       await post('hackerscup_matchup_players', { match_id: match.id, player_id: l1, team: 'Light', position: 1 });
       if (l2) await post('hackerscup_matchup_players', { match_id: match.id, player_id: l2, team: 'Light', position: 2 });
+      for (var j = 0; j < segmentsToCreate.length; j++) {
+        var s = segmentsToCreate[j];
+        await post('hackerscup_match_segments', { match_id: match.id, segment_number: j + 1, format: s.format, hole_start: s.hole_start, hole_end: s.hole_end, status: 'active' });
+      }
       showToast('Match added', 'success');
+      document.getElementById('segments-builder-container').innerHTML = '';
+      state.segmentBuilderCount = 0;
       await loadAll();
     } catch (e) { console.error(e); showToast('Failed to add match', 'error'); }
   }
 
   async function deleteMatch(matchId) {
-    if (!confirm('Delete this match and all its scores? This cannot be undone.')) return;
+    if (!confirm('Delete this match, all its segments and scores? This cannot be undone.')) return;
     try {
       await del('hackerscup_hole_results', 'match_id=eq.' + matchId);
+      await del('hackerscup_match_segments', 'match_id=eq.' + matchId);
       await del('hackerscup_matchup_players', 'match_id=eq.' + matchId);
       await del('hackerscup_matches', 'id=eq.' + matchId);
       showToast('Match deleted', 'success');
@@ -814,12 +959,12 @@
     } catch (e) { console.error(e); showToast('Failed to delete match', 'error'); }
   }
 
-  async function toggleMatchStatus(matchId, newStatus) {
+  async function toggleSegmentStatus(segmentId, newStatus) {
     try {
-      await patch('hackerscup_matches', 'id=eq.' + matchId, { status: newStatus });
-      showToast('Match ' + newStatus, 'success');
+      await patch('hackerscup_match_segments', 'id=eq.' + segmentId, { status: newStatus });
+      showToast('Segment ' + newStatus, 'success');
       await loadAll();
-    } catch (e) { showToast('Failed to update match', 'error'); }
+    } catch (e) { showToast('Failed to update segment', 'error'); }
   }
 
   function renderAdminMatches() {
@@ -833,16 +978,22 @@
       roundMatches.forEach(function (m) {
         var southNames = playersForMatch(m.id, 'South').join('/');
         var lightNames = playersForMatch(m.id, 'Light').join('/');
-        var st = calcMatchStatus(m);
-        html += '<div class="admin-row"><div class="admin-row-info">'
-          + '<div class="admin-row-name">' + formatLabel(m.format) + ' \u00b7 Holes ' + m.hole_start + '-' + m.hole_end + '</div>'
-          + '<div class="admin-row-meta">' + southNames + ' vs ' + lightNames + ' \u00b7 <span class="status-pill ' + (m.status === 'closed' ? 'closed' : 'active') + '">' + (m.status === 'closed' ? 'closed' : (st.complete ? 'complete' : 'active')) + '</span></div>'
-          + '</div><div class="admin-row-actions">'
-          + (m.status === 'closed'
-            ? '<button class="btn-sm gold" onclick="toggleMatchStatus(\'' + m.id + '\', \'active\')">Reopen</button>'
-            : '<button class="btn-sm gold" onclick="toggleMatchStatus(\'' + m.id + '\', \'closed\')">Close</button>')
-          + '<button class="btn-sm danger" onclick="deleteMatch(\'' + m.id + '\')">Delete</button>'
-          + '</div></div>';
+        html += '<div class="admin-match-block">'
+          + '<div class="admin-row" style="border-bottom:none;padding-bottom:4px;">'
+          + '<div class="admin-row-info"><div class="admin-row-name">' + southNames + ' vs ' + lightNames + '</div></div>'
+          + '<div class="admin-row-actions"><button class="btn-sm danger" onclick="deleteMatch(\'' + m.id + '\')">Delete Match</button></div>'
+          + '</div>';
+        segmentsForMatch(m.id).forEach(function (seg) {
+          var st = calcSegmentStatus(m.id, seg);
+          html += '<div class="admin-segment-line"><div class="admin-row-meta">' + formatLabel(seg.format) + ' \u00b7 Holes ' + seg.hole_start + '-' + seg.hole_end
+            + ' \u00b7 <span class="status-pill ' + (seg.status === 'closed' ? 'closed' : 'active') + '">' + (seg.status === 'closed' ? 'closed' : (st.complete ? 'complete' : 'active')) + '</span></div>'
+            + '<div class="admin-row-actions">'
+            + (seg.status === 'closed'
+              ? '<button class="btn-sm gold" onclick="toggleSegmentStatus(\'' + seg.id + '\', \'active\')">Reopen</button>'
+              : '<button class="btn-sm gold" onclick="toggleSegmentStatus(\'' + seg.id + '\', \'closed\')">Force Close</button>')
+            + '</div></div>';
+        });
+        html += '</div>';
       });
     });
     container.innerHTML = html;
