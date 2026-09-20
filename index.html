@@ -594,7 +594,7 @@
           segs.forEach(function (seg) {
             var st = calcSegmentStatus(match.id, seg);
             var displayStatus = st.complete ? 'FINAL' : ('Thru ' + st.holesPlayed);
-            var holes = ownedHoles(match.id, seg);
+            var holes = segmentHoles(seg);
             var results = segmentResults(match.id, seg);
             var crossed = crossedHolesForSegment(match.id, seg, st);
             var dots = '';
