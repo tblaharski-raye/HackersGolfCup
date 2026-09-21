@@ -445,25 +445,44 @@
     return state.segments.find(function (s) { return s.match_id === matchId && s.segment_number === segment.segment_number + 1; });
   }
 
-  // Holes still "owned" by this segment for display purposes. Once a segment is
-  // closed and the next segment started early on an overlapping hole number,
-  // those overlapping holes belong to the next segment now and should not also
-  // appear under this one (avoids duplicate hole cards/dots for the same hole).
+  // A segment is "settled" once it's either explicitly closed (decided early
+  // and confirmed) or has a result recorded for every one of its own holes.
+  // Checked directly against hole_results (not segmentResults) to avoid a
+  // circular dependency, since segmentResults itself depends on this.
+  function isSegmentSettled(matchId, segment) {
+    if (segment.status === 'closed') return true;
+    var start = effectiveHoleStart(segment);
+    var end = effectiveHoleEnd(segment);
+    var count = 0;
+    for (var i = 0; i < state.holeResults.length; i++) {
+      var r = state.holeResults[i];
+      if (r.match_id === matchId && r.hole_number >= start && r.hole_number <= end) count++;
+    }
+    return count >= (end - start + 1);
+  }
+
+  // Holes still "owned" by this segment. Once a segment is settled and the
+  // next segment started early on an overlapping hole number, those
+  // overlapping holes belong to the next segment now — this segment must
+  // never count, color, or claim results for them again, even though the
+  // hole numbers fall inside its own originally configured range.
   function ownedHoles(matchId, segment) {
     var holes = segmentHoles(segment);
     var nextSeg = nextSegmentFor(matchId, segment);
-    if (nextSeg && segment.status === 'closed') {
+    if (nextSeg && isSegmentSettled(matchId, segment)) {
       var nextStart = effectiveHoleStart(nextSeg);
       holes = holes.filter(function (h) { return h < nextStart; });
     }
     return holes;
   }
 
+  // Scoped to owned holes only, so a result entered for a hole that a later
+  // segment has since claimed is never double-counted here (this was the
+  // source of both the duplicate/miscolored dots and skewed match status).
   function segmentResults(matchId, segment) {
-    var start = effectiveHoleStart(segment);
-    var end = effectiveHoleEnd(segment);
+    var owned = ownedHoles(matchId, segment);
     return state.holeResults.filter(function (r) {
-      return r.match_id === matchId && r.hole_number >= start && r.hole_number <= end;
+      return r.match_id === matchId && owned.indexOf(r.hole_number) !== -1;
     });
   }
 
@@ -502,13 +521,16 @@
     };
   }
 
+  // Every one of a segment's own holes that isn't owned (claimed by the next
+  // segment) or doesn't yet have a result of its own — shown crossed out.
   function crossedHolesForSegment(matchId, segment, st) {
-    if (!st.complete || st.holesPlayed >= st.total) return [];
+    if (!st.complete) return [];
     var holes = segmentHoles(segment);
+    var owned = ownedHoles(matchId, segment);
     var results = segmentResults(matchId, segment);
     var playedSet = {};
     results.forEach(function (r) { playedSet[r.hole_number] = true; });
-    return holes.filter(function (h) { return !playedSet[h]; });
+    return holes.filter(function (h) { return owned.indexOf(h) === -1 || !playedSet[h]; });
   }
 
   function awardPoints(diff) {
