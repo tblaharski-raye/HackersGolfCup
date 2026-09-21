@@ -800,9 +800,23 @@
         + '</div>';
       holes.forEach(function (holeNum) {
         var result = results.find(function (r) { return r.hole_number === holeNum; });
+        var locked = segment.status === 'closed';
+        if (locked && !result) {
+          html += '<div class="hole-entry-card" id="hole-card-' + holeNum + '" style="border-radius:0;border-top:none;opacity:0.5;">'
+            + '<div class="hole-entry-header"><div class="hole-entry-num">Hole ' + holeNum + '</div><div class="format-badge">Match Decided — Not Played</div></div>'
+            + '</div>';
+          return;
+        }
         var southSel = (result && result.winner === 'South') ? ' selected' : '';
         var halvSel = (result && result.winner === 'halved') ? ' selected' : '';
         var lightSel = (result && result.winner === 'Light') ? ' selected' : '';
+        if (locked) {
+          var lockedLabel = result.winner === 'South' ? 'South' : (result.winner === 'Light' ? 'Light' : 'Halved');
+          html += '<div class="hole-entry-card" id="hole-card-' + holeNum + '" style="border-radius:0;border-top:none;">'
+            + '<div class="hole-entry-header"><div class="hole-entry-num">Hole ' + holeNum + '</div><div class="format-badge">' + lockedLabel + ' \u00b7 Locked</div></div>'
+            + '</div>';
+          return;
+        }
         html += '<div class="hole-entry-card" id="hole-card-' + holeNum + '" style="border-radius:0;border-top:none;">'
           + '<div class="hole-entry-header"><div class="hole-entry-num">Hole ' + holeNum + '</div></div>'
           + '<div class="winner-btns">'
